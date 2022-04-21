@@ -169,77 +169,83 @@
           axios.get(`${Api_Base_Url}/Pokemon`)
             .then((res) => {
               //驗證資料status == 20000時，將資料傳入PokemonList
-              if(res.data.status ==20000){
+              if (res.data.status == 20000) {
                 this.pokemonList = res.data.result
-              }else{
+              } else {
                 //驗證失敗時
                 console.warn('撈資料失敗')
               }
             })
-            .catch((error=>{console.log(error)}))
+            .catch((error => { console.log(error) }))
         },
         selectEdit(pokemon) {
           //編輯啟用按鈕狀態
-          this.enableEdit=false
+          this.enableEdit = false
 
-          let copyPokemon={...pokemon}//解構賦值
+          let copyPokemon = { ...pokemon }//解構賦值
 
           this.currentPokemon = copyPokemon
         },
         createPokemon() {
           axios.post(`${Api_Base_Url}/Pokemon`, this.createPokemonData)
-            .then((res=>{
-              if(res.data.status == 20000 && res.data.result == true){
+            .then((res => {
+              if (res.data.status == 20000 && res.data.result == true) {
                 toastr.success('新增成功')
                 $('#create-modal').modal('hide')
                 this.getAllPokemon()
-              }else{
+              } else {
                 toastr.error('新增失敗')
               }
             }))
-            .catch((error)=>{console.error(error)})
+            .catch((error) => { console.log(error) })
         },
         updatePokemon() {
-          axios.put(`${Api_Base_Url}/Pokemon`,this.currentPokemon)
-            .then((res)=>{
+          axios.put(`${Api_Base_Url}/Pokemon`, this.currentPokemon)
+            .then((res) => {
               //資料Status == 20000 並寫資料 result 為True成功
-              if(res.data.status == 20000 && res.data.result == true){
+              if (res.data.status == 20000 && res.data.result == true) {
                 toastr.success("更新成功")
                 //抓取目前資料庫所有資料
                 this.getAllPokemon()
                 //關閉編輯介面
                 $('#edit-modal').modal('hide')
-              }else{
+              } else {
                 toastr.error('更新失敗')
               }
             })
-            .catch((error=>{console.log(error)}))
+            .catch((error => { console.log(error) }))
         },
         deletePokemon(pokemon) {
-          
-          //刪除前確認(bootstrapVue)
-          this.$bvModal.msgBoxConfirm('確定刪除資料?',{
-            title:"警告",
-            size:'sm',
-            okVariant:'Danger',
-            okTitle:'確認',
-            cancelTitle:'取消',
-            footerClass:'p-2',
-            hideHeaderClose:false,
-            centered:true
-          })
 
-          axios.delete(`${Api_Base_Url}/Pokemon`,{data:pokemon})
-            .then((res=>{
-              if(res.data.status == 20000 && res.data.result == true){
-                toastr.success('刪除成功')
-                //刪除後重整資料
-                this.getAllPokemon()
-              }else{
-                toastr.error('刪除失敗')
+          //刪除前確認(bootstrapVue)
+          this.$bvModal.msgBoxConfirm('確定刪除資料?', {
+            title: "警告",
+            size: 'sm',
+            okVariant: 'danger',
+            okTitle: '確認',
+            cancelTitle: '取消',
+            footerClass: 'p-2',
+            hideHeaderClose: false,
+            centered: true
+          })
+            .then(value => {
+              if (value) {
+                axios.delete(`${Api_Base_Url}/Pokemon`, { data: pokemon })
+                  .then((res => {
+                    if (res.data.status == 20000 && res.data.result == true) {
+                      toastr.success('刪除成功')
+                      //刪除後重整資料
+                      this.getAllPokemon()
+                    } else {
+                      toastr.error('刪除失敗')
+                    }
+                  }))
+                  .catch((error => { console.log(error) }))
+              } else {
+                toastr.warning('刪除取消')
               }
-            }))
-            .catch((error=>{console.log(error)}))
+            })
+            .catch((error => { console.log(error) }))
         },
       },
     });
