@@ -46,7 +46,8 @@
           </tr>
         </tbody>
       </table>
-    </div> <!-- 新增Modal -->
+    </div>
+    <!-- 新增Modal -->
     <div class="modal fade" id="create-modal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -186,6 +187,17 @@
           this.currentPokemon = copyPokemon
         },
         createPokemon() {
+          axios.post(`${Api_Base_Url}/Pokemon`, this.createPokemonData)
+            .then((res=>{
+              if(res.data.status == 20000 && res.data.result == true){
+                toastr.success('新增成功')
+                $('#create-modal').modal('hide')
+                this.getAllPokemon()
+              }else{
+                toastr.error('新增失敗')
+              }
+            }))
+            .catch((error)=>{console.error(error)})
         },
         updatePokemon() {
           axios.put(`${Api_Base_Url}/Pokemon`,this.currentPokemon)
