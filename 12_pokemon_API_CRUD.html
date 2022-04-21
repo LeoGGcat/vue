@@ -216,6 +216,19 @@
             .catch((error=>{console.log(error)}))
         },
         deletePokemon(pokemon) {
+          
+          //刪除前確認(bootstrapVue)
+          this.$bvModal.msgBoxConfirm('確定刪除資料?',{
+            title:"警告",
+            size:'sm',
+            okVariant:'Danger',
+            okTitle:'確認',
+            cancelTitle:'取消',
+            footerClass:'p-2',
+            hideHeaderClose:false,
+            centered:true
+          })
+
           axios.delete(`${Api_Base_Url}/Pokemon`,{data:pokemon})
             .then((res=>{
               if(res.data.status == 20000 && res.data.result == true){
