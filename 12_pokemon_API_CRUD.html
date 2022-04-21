@@ -98,6 +98,7 @@
             <div class="row">
               <div class="col-12 col-md-6 mb-3"> <label>名稱</label> <input readonly v-model="currentPokemon.name"
                   class="form-control" type="text"> </div>
+              <!-- 以Bind方式決定是否有readonly -->
               <div class="col-12 col-md-6 mb-3"> <label>暱稱</label> <input :readonly="!enableEdit"
                   v-model="currentPokemon.nickName" class="form-control" type="text"> </div>
               <div class="col-12 col-md-6 mb-3"> <label>類型</label> <input :readonly="!enableEdit"
@@ -187,6 +188,19 @@
         createPokemon() {
         },
         updatePokemon() {
+          axios.put(`${Api_Base_Url}/Pokemon`,this.currentPokemon)
+            .then((res)=>{
+              //資料Status == 20000 並寫資料 result 為True成功
+              if(res.data.status == 20000 && res.data.result == true){
+                toastr.success("更新成功")
+                //抓取目前資料庫所有資料
+                this.getAllPokemon()
+                //關閉編輯介面
+                $('#edit-model').modal('hide')
+              }else{
+                toastr.error('更新失敗')
+              }
+            })
         },
         deletePokemon(pokemon) {
         },
