@@ -166,7 +166,10 @@
         getAllPokemon() {
           axios.get(`${Api_Base_Url}/Pokemon`)
             .then((res) => {
-              console.log(res)
+              //當資料status == 20000，將資料傳入PokemonList
+              if(res.data.status ==20000){
+                this.pokemonList = res.data.result
+              }
             })
             .catch((error=>{console.log(error)}))
         },
