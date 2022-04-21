@@ -201,8 +201,20 @@
                 toastr.error('更新失敗')
               }
             })
+            .catch((error=>{console.log(error)}))
         },
         deletePokemon(pokemon) {
+          axios.delete(`${Api_Base_Url}/Pokemon`,{data:pokemon})
+            .then((res=>{
+              if(res.data.status == 20000 && res.data.result == true){
+                toastr.success('刪除成功')
+                //刪除後重整資料
+                this.getAllPokemon()
+              }else{
+                toastr.error('刪除失敗')
+              }
+            }))
+            .catch((error=>{console.log(error)}))
         },
       },
     });
