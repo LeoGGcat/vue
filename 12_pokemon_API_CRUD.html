@@ -176,7 +176,13 @@
             })
             .catch((error=>{console.log(error)}))
         },
-        selectEdit() {
+        selectEdit(pokemon) {
+          //編輯啟用按鈕狀態
+          this.enableEdit=false
+
+          let copyPokemon={...pokemon}//解構賦值
+
+          this.currentPokemon = copyPokemon
         },
         createPokemon() {
         },
