@@ -79,7 +79,8 @@
             </div>
           </div>
           <div class="modal-footer"> <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-            <button v-on:click="createPokemon" type="button" class="btn btn-primary">新增</button> </div>
+            <button v-on:click="createPokemon" type="button" class="btn btn-primary">新增</button>
+          </div>
         </div>
       </div>
     </div> <!-- 編輯Modal -->
@@ -112,7 +113,8 @@
             </div>
           </div>
           <div class="modal-footer"> <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-            <button v-on:click="updatePokemon" type="button" class="btn btn-primary">更新</button> </div>
+            <button v-on:click="updatePokemon" type="button" class="btn btn-primary">更新</button>
+          </div>
         </div>
       </div>
     </div>
@@ -129,41 +131,54 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
     integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
     crossorigin="anonymous"></script>
-  <script>    let app = new Vue({
+  <script>
+    //從SWAGGER取得資料網址
+    const Api_Base_Url = 'https://localhost:5001'
+
+    let app = new Vue({
+
+
       el: '#app',
       data: {
         pokemonList: [],
         //新增        
         createPokemonData: {
-        name: "皮卡丘",
-        nickName: "皮皮",
-        type: "鼠寶可夢",
-        image: "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/025.png",
-        hp: 35,
-        speed: 90,
-        attack: 55,
-        defanse: 40,
-        spAttack: 50,
-        spDefense: 50,
+          name: "皮卡丘",
+          nickName: "皮皮",
+          type: "鼠寶可夢",
+          image: "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/025.png",
+          hp: 35,
+          speed: 90,
+          attack: 55,
+          defanse: 40,
+          spAttack: 50,
+          spDefense: 50,
+        },
+        //編輯        
+        currentPokemon: {},
+        enableEdit: false,
       },
-      //編輯        
-      currentPokemon: {},
-      enableEdit: false,
-    },
       created() {
-    },
+        this.getAllPokemon()
+      },
       methods: {
-      getAllPokemon() {
+        //把Pokemon[Get]方法撈下來
+        getAllPokemon() {
+          axios.get(`${Api_Base_Url}/Pokemon`)
+            .then((res) => {
+              console.log(res)
+            })
+            .catch((error=>{console.log(error)}))
+        },
+        selectEdit() {
+        },
+        createPokemon() {
+        },
+        updatePokemon() {
+        },
+        deletePokemon(pokemon) {
+        },
       },
-      selectEdit() {
-      },
-      createPokemon() {
-      },
-      updatePokemon() {
-      },
-      deletePokemon(pokemon) {
-      },
-    },
     });
   </script>
 </body>
