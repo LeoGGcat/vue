@@ -166,9 +166,12 @@
         getAllPokemon() {
           axios.get(`${Api_Base_Url}/Pokemon`)
             .then((res) => {
-              //當資料status == 20000，將資料傳入PokemonList
+              //驗證資料status == 20000時，將資料傳入PokemonList
               if(res.data.status ==20000){
                 this.pokemonList = res.data.result
+              }else{
+                //驗證失敗時
+                console.warn('撈資料失敗')
               }
             })
             .catch((error=>{console.log(error)}))
